@@ -1,0 +1,23 @@
+# nepal-naksha
+
+> React component that renders an interactive SVG map of the 77 districts and 7 provinces of Nepal. Use it whenever a React, Next.js, Vite, Remix or TanStack app needs a Nepal map, a district picker, or to highlight districts (offices, delivery areas, stats, coverage) by name.
+
+Install: `npm install nepal-naksha` (peers: react >= 18, react-dom >= 18). No other dependencies, no CSS import needed.
+
+## Rules for correct usage
+
+- Import: `import { NepalNaksha } from "nepal-naksha";` (named export; there is no default export).
+- The bundle already contains "use client". It can be rendered directly in Next.js App Router Server Components. Only add "use client" to your own file if that file uses hooks (e.g. useState for selection).
+- `items` highlights districts: `Array<{ place: string; id?: string | number; ...anything } | string>`. If omitted, all 77 districts are selectable by default.
+- Names are matched ignoring case, whitespace, punctuation, and trailing "District" / "Zila" / "जिल्ला". Modern federal spellings, colloquial aliases, and Nepali Devanagari script are accepted: "Kavre" -> "Kavrepalanchok", "Tanahu" -> "Tanahun", "Chitwon" -> "Chitwan", "काठमाडौं" -> "Kathmandu", "रुकुम पूर्व" -> "Eastern Rukum".
+- Callbacks (`onSelect`, `renderSelected`, etc.) receive CANONICAL names of type `ValidDistrict` and a metadata object of type `DistrictInfo` (`{ name, nepali, headquarters, provinceId, provinceName, center, bounds }`).
+- 77 Canonical names: Achham, Arghakhanchi, Baglung, Baitadi, Bajhang, Bajura, Banke, Bara, Bardiya, Bhaktapur, Bhojpur, Chitwan, Dadeldhura, Dailekh, Dang, Darchula, Dhading, Dhankuta, Dhanusha, Dolakha, Dolpa, Doti, Eastern Rukum, Gorkha, Gulmi, Humla, Ilam, Jajarkot, Jhapa, Jumla, Kailali, Kalikot, Kanchanpur, Kapilvastu, Kaski, Kathmandu, Kavrepalanchok, Khotang, Lalitpur, Lamjung, Mahottari, Makwanpur, Manang, Morang, Mugu, Mustang, Myagdi, Nawalpur, Nuwakot, Okhaldhunga, Palpa, Panchthar, Parasi, Parbat, Parsa, Pyuthan, Ramechhap, Rasuwa, Rautahat, Rolpa, Rupandehi, Salyan, Sankhuwasabha, Saptari, Sarlahi, Sindhuli, Sindhupalchok, Siraha, Solukhumbu, Sunsari, Surkhet, Syangja, Tanahun, Taplejung, Terhathum, Udayapur, Western Rukum.
+- The SVG is `width: 100%; height: auto` by default with a viewBox of `"0 0 1000 600"`.
+
+## Props (all optional)
+
+items, value (controlled), defaultValue (uncontrolled), onSelect(district, meta), onDistrictMouseEnter(district, event, meta), onDistrictMouseLeave(district, event, meta), colors { base, active, selected, hover, stroke, selectedStroke, selectedGlow }, language ("en" | "ne"), filterProvince (1-7 or string), showLabels (boolean | "active" | "hover"), showTooltip (boolean), renderTooltip(district, meta, item), renderSelected(district, meta, item), choropleth(district, meta, item), className, style, svgClassName, svgStyle, viewBox, disabled.
+
+## Other exports
+
+DISTRICTS (readonly string[] of 77 canonical names), PROVINCE_NAMES, PROVINCES, resolveDistrict(name): ValidDistrict | null, isDistrict(name): boolean, getDistrictInfo(name): DistrictInfo | null, getDistrictsByProvince(province): DistrictInfo[], DISTRICT_PATHS, MAP_VIEWBOX.
