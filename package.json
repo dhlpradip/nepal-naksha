@@ -1,5 +1,5 @@
 {
-  "name": "nepal-naksha",
+  "name": "nepal-naksha-react",
   "version": "1.1.2",
   "description": "Fast, lightweight, dependency-free interactive SVG map React component for all 77 districts and 7 provinces of Nepal.",
   "main": "./dist/index.js",

@@ -1,4 +1,4 @@
-# nepal-naksha 🇳🇵
+# nepal-naksha-react 🇳🇵
 
 > Fast, lightweight, zero-dependency React component that renders an interactive SVG map of all 77 districts and 7 provinces of Nepal.
 
@@ -23,11 +23,11 @@
 ## Installation
 
 ```bash
-npm install nepal-naksha
+npm install nepal-naksha-react
 # or
-yarn add nepal-naksha
+yarn add nepal-naksha-react
 # or
-pnpm add nepal-naksha
+pnpm add nepal-naksha-react
 ```
 
 *(Peers: `react >= 18`, `react-dom >= 18`)*
@@ -42,7 +42,7 @@ pnpm add nepal-naksha
 "use client";
 
 import { useState } from "react";
-import { NepalNaksha, type ValidDistrict } from "nepal-naksha";
+import { NepalNaksha, type ValidDistrict } from "nepal-naksha-react";
 
 export default function App() {
   const [selected, setSelected] = useState<ValidDistrict | null>("Kathmandu");
@@ -69,7 +69,7 @@ export default function App() {
 Pass the `items` prop to highlight specific districts. Any unlisted district is rendered in the `base` color.
 
 ```tsx
-import { NepalNaksha } from "nepal-naksha";
+import { NepalNaksha } from "nepal-naksha-react";
 
 const branches = [
   { place: "Kathmandu", count: 12 },
@@ -176,7 +176,7 @@ import {
   getDistrictInfo,        // Returns { name, nepali, headquarters, provinceId, provinceName, center, bounds }
   getDistrictsByProvince, // Returns array of districts belonging to a province
   DISTRICT_PATHS,         // Raw SVG path strings and centroid data
-} from "nepal-naksha";
+} from "nepal-naksha-react";
 
 // Example alias matching
 resolveDistrict("kavre");              // "Kavrepalanchok"

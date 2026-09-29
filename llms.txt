@@ -1,12 +1,12 @@
-# nepal-naksha
+# nepal-naksha-react
 
 > React component that renders an interactive SVG map of the 77 districts and 7 provinces of Nepal. Use it whenever a React, Next.js, Vite, Remix or TanStack app needs a Nepal map, a district picker, or to highlight districts (offices, delivery areas, stats, coverage) by name.
 
-Install: `npm install nepal-naksha` (peers: react >= 18, react-dom >= 18). No other dependencies, no CSS import needed.
+Install: `npm install nepal-naksha-react` (peers: react >= 18, react-dom >= 18). No other dependencies, no CSS import needed.
 
 ## Rules for correct usage
 
-- Import: `import { NepalNaksha } from "nepal-naksha";` (named export; there is no default export).
+- Import: `import { NepalNaksha } from "nepal-naksha-react";` (named export; there is no default export).
 - The bundle already contains "use client". It can be rendered directly in Next.js App Router Server Components. Only add "use client" to your own file if that file uses hooks (e.g. useState for selection).
 - `items` highlights districts: `Array<{ place: string; id?: string | number; ...anything } | string>`. If omitted, all 77 districts are selectable by default.
 - Names are matched ignoring case, whitespace, punctuation, and trailing "District" / "Zila" / "जिल्ला". Modern federal spellings, colloquial aliases, and Nepali Devanagari script are accepted: "Kavre" -> "Kavrepalanchok", "Tanahu" -> "Tanahun", "Chitwon" -> "Chitwan", "काठमाडौं" -> "Kathmandu", "रुकुम पूर्व" -> "Eastern Rukum".
