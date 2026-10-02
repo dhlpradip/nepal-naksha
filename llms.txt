@@ -13,10 +13,11 @@ Install: `npm install nepal-naksha-react` (peers: react >= 18, react-dom >= 18).
 - Callbacks (`onSelect`, `renderSelected`, etc.) receive CANONICAL names of type `ValidDistrict` and a metadata object of type `DistrictInfo` (`{ name, nepali, headquarters, provinceId, provinceName, center, bounds }`).
 - 77 Canonical names: Achham, Arghakhanchi, Baglung, Baitadi, Bajhang, Bajura, Banke, Bara, Bardiya, Bhaktapur, Bhojpur, Chitwan, Dadeldhura, Dailekh, Dang, Darchula, Dhading, Dhankuta, Dhanusha, Dolakha, Dolpa, Doti, Eastern Rukum, Gorkha, Gulmi, Humla, Ilam, Jajarkot, Jhapa, Jumla, Kailali, Kalikot, Kanchanpur, Kapilvastu, Kaski, Kathmandu, Kavrepalanchok, Khotang, Lalitpur, Lamjung, Mahottari, Makwanpur, Manang, Morang, Mugu, Mustang, Myagdi, Nawalpur, Nuwakot, Okhaldhunga, Palpa, Panchthar, Parasi, Parbat, Parsa, Pyuthan, Ramechhap, Rasuwa, Rautahat, Rolpa, Rupandehi, Salyan, Sankhuwasabha, Saptari, Sarlahi, Sindhuli, Sindhupalchok, Siraha, Solukhumbu, Sunsari, Surkhet, Syangja, Tanahun, Taplejung, Terhathum, Udayapur, Western Rukum.
 - The SVG is `width: 100%; height: auto` by default with a viewBox of `"0 0 1000 600"`.
+- `routes` draws delivery/travel paths between district names or raw SVG `[x, y]` points. Each route supports an optional hover-only `name` label plus `color`, `width`, `dasharray`, `opacity`, `curved`, and `showMarkers`.
 
 ## Props (all optional)
 
-items, value (controlled), defaultValue (uncontrolled), onSelect(district, meta), onDistrictMouseEnter(district, event, meta), onDistrictMouseLeave(district, event, meta), colors { base, active, selected, hover, stroke, selectedStroke, selectedGlow }, language ("en" | "ne"), filterProvince (1-7 or string), showLabels (boolean | "active" | "hover"), showTooltip (boolean), renderTooltip(district, meta, item), renderSelected(district, meta, item), choropleth(district, meta, item), className, style, svgClassName, svgStyle, viewBox, disabled.
+items, value (controlled), defaultValue (uncontrolled), onSelect(district, meta), onDistrictMouseEnter(district, event, meta), onDistrictMouseLeave(district, event, meta), colors { base, active, selected, hover, stroke, selectedStroke, selectedGlow }, language ("en" | "ne"), filterProvince (1-7 or string), showLabels (boolean | "active" | "hover"), showTooltip (boolean), renderTooltip(district, meta, item), renderSelected(district, meta, item), choropleth(district, meta, item), routes, className, style, svgClassName, svgStyle, viewBox, disabled.
 
 ## Other exports
 

@@ -28,6 +28,21 @@ export interface DistrictItemObject {
 
 export type DistrictItem = DistrictItemObject | DistrictInput;
 
+export type RoutePoint = DistrictInput | readonly [number, number];
+
+export interface NepalNakshaRoute {
+  source: RoutePoint;
+  destination: RoutePoint;
+  /** Optional label rendered at the route midpoint. */
+  name?: string;
+  color?: string;
+  width?: number;
+  dasharray?: string;
+  opacity?: number;
+  curved?: boolean;
+  showMarkers?: boolean;
+}
+
 export interface NepalNakshaColors {
   /** Background fill for non-active/unselected districts. Default: "#e2e8f0" */
   base?: string;
@@ -125,6 +140,9 @@ export interface NepalNakshaProps {
     item?: DistrictItemObject
   ) => string | undefined;
 
+  /** Delivery or travel routes rendered between district centers or SVG coordinates. */
+  routes?: readonly NepalNakshaRoute[];
+
   /** Wrapper container class name. */
   className?: string;
 
@@ -172,6 +190,7 @@ export function NepalNaksha({
   renderTooltip,
   renderSelected,
   choropleth,
+  routes = [],
   className = "",
   style,
   svgClassName = "",
@@ -227,6 +246,7 @@ export function NepalNaksha({
 
   // Hover state
   const [hoveredDistrict, setHoveredDistrict] = useState<ValidDistrict | null>(null);
+  const [hoveredRoute, setHoveredRoute] = useState<number | null>(null);
   const [tooltipPos, setTooltipPos] = useState<{ x: number; y: number } | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -347,6 +367,23 @@ export function NepalNaksha({
     return [...DISTRICTS.filter((district) => district !== selectedDistrict), selectedDistrict];
   }, [selectedDistrict]);
 
+  const resolvedRoutes = useMemo(() => {
+    return routes.flatMap((route) => {
+      const resolvePoint = (point: RoutePoint): [number, number] | null => {
+        if (typeof point !== "string" && point.length === 2) {
+          const x = Number(point[0]);
+          const y = Number(point[1]);
+          return Number.isFinite(x) && Number.isFinite(y) ? [x, y] : null;
+        }
+        return getDistrictInfo(resolveDistrict(typeof point === "string" ? point : null))?.center ?? null;
+      };
+
+      const source = resolvePoint(route.source);
+      const destination = resolvePoint(route.destination);
+      return source && destination ? [{ ...route, source, destination }] : [];
+    });
+  }, [routes]);
+
   return (
     <div
       ref={containerRef}
@@ -415,6 +452,77 @@ export function NepalNaksha({
           })}
         </g>
 
+        {resolvedRoutes.length > 0 && (
+          <g className="nepal-naksha-routes">
+            {resolvedRoutes.map((route, index) => {
+              const [x1, y1] = route.source;
+              const [x2, y2] = route.destination;
+              const midpointX = (x1 + x2) / 2;
+              const midpointY = (y1 + y2) / 2;
+              const curveOffset = Math.max(18, Math.hypot(x2 - x1, y2 - y1) * 0.12);
+              const controlY = midpointY - curveOffset;
+              const curveMidpointY = (y1 + 2 * controlY + y2) / 4;
+              const path =
+                route.curved === false
+                  ? `M ${x1} ${y1} L ${x2} ${y2}`
+                  : `M ${x1} ${y1} Q ${midpointX} ${controlY} ${x2} ${y2}`;
+              const color = route.color ?? "#f97316";
+              const labelY = route.curved === false ? midpointY - 8 : curveMidpointY - 8;
+
+              return (
+                <g
+                  key={`route-${index}`}
+                  onMouseEnter={() => setHoveredRoute(index)}
+                  onMouseLeave={() => setHoveredRoute(null)}
+                >
+                  <path
+                    d={path}
+                    fill="none"
+                    stroke="transparent"
+                    strokeWidth={Math.max(14, (route.width ?? 2.5) + 10)}
+                    strokeLinecap="round"
+                    pointerEvents="stroke"
+                  />
+                  <path
+                    d={path}
+                    fill="none"
+                    stroke={color}
+                    strokeWidth={route.width ?? 2.5}
+                    strokeDasharray={route.dasharray ?? "8 6"}
+                    strokeOpacity={route.opacity ?? 0.9}
+                    strokeLinecap="round"
+                    pointerEvents="none"
+                  />
+                  {route.showMarkers !== false && (
+                    <>
+                      <circle cx={x1} cy={y1} r={5} fill="#ffffff" stroke={color} strokeWidth={2} />
+                      <circle cx={x2} cy={y2} r={5} fill={color} stroke="#ffffff" strokeWidth={2} />
+                    </>
+                  )}
+                  {route.name && hoveredRoute === index && (
+                    <text
+                      x={midpointX}
+                      y={labelY}
+                      fill={color}
+                      fontSize="12"
+                      fontWeight="700"
+                      textAnchor="middle"
+                      paintOrder="stroke"
+                      stroke="#0f172a"
+                      strokeWidth="4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      pointerEvents="none"
+                    >
+                      {route.name}
+                    </text>
+                  )}
+                </g>
+              );
+            })}
+          </g>
+        )}
+
         {/* Optional Centroid Labels */}
         {showLabels && (
           <g className="nepal-naksha-labels" pointerEvents="none">
@@ -430,6 +538,7 @@ export function NepalNaksha({
               const isHovered = hoveredDistrict === name;
               const isSelected = selectedDistrict === name;
               const isActive = hasExplicitItems ? activeMap.has(name) : true;
+              const isActiveLabel = showLabels === "active" && hasExplicitItems && isActive;
 
               const shouldShowLabel =
                 showLabels === true ||
@@ -450,9 +559,9 @@ export function NepalNaksha({
                   dominantBaseline="central"
                   fontSize={isSelected || isHovered ? 11 : 9}
                   fontWeight={isSelected || isHovered ? "bold" : "normal"}
-                  fill={isSelected ? "#ffffff" : isHovered ? "#1e293b" : "#475569"}
+                  fill={isSelected || isActiveLabel ? "#ffffff" : isHovered ? "#1e293b" : "#475569"}
                   style={{
-                    textShadow: isSelected
+                    textShadow: isSelected || isActiveLabel
                       ? "0 1px 3px rgba(0,0,0,0.8)"
                       : "0 1px 2px rgba(255,255,255,0.9)",
                     pointerEvents: "none",

@@ -4,6 +4,8 @@ export {
   type NepalNakshaColors,
   type DistrictItem,
   type DistrictItemObject,
+  type NepalNakshaRoute,
+  type RoutePoint,
 } from "./components/NepalNaksha";
 
 export {

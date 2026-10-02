@@ -76,4 +76,37 @@ describe("<NepalNaksha /> React Component", () => {
 
     expect(html).not.toContain(">Kathmandu</text>");
   });
+
+  it("renders active labels in white for highlighted districts", () => {
+    const html = renderToString(
+      <NepalNaksha
+        items={["Kathmandu"]}
+        showLabels="active"
+      />
+    );
+
+    expect(html).toContain('fill="#ffffff"');
+    expect(html).toContain(">Kathmandu</text>");
+  });
+
+  it("renders delivery routes between district centers", () => {
+    const html = renderToString(
+      <NepalNaksha
+        routes={[
+          {
+            name: "Eastern delivery",
+            source: "Kathmandu",
+            destination: "Jhapa",
+            color: "#f97316",
+          },
+        ]}
+      />
+    );
+
+    expect(html).toContain('class="nepal-naksha-routes"');
+    expect(html).toContain('stroke="#f97316"');
+    expect(html).not.toContain(">Eastern delivery</text>");
+    expect(html).toContain('cx="642.3"');
+    expect(html).toContain('cx="945.9"');
+  });
 });

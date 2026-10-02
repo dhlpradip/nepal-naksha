@@ -15,6 +15,7 @@
 - 🧠 **Smart Alias & Spelling Resolution:** Automatically matches spelling variants and colloquial forms (e.g. `Kavre` ↔ `Kavrepalanchok`, `Tanahu` ↔ `Tanahun`, `Chitwon` ↔ `Chitwan`, `Parasi` ↔ `Nawalparasi West`, `Rukum East`, etc.).
 - 🎨 **Fully Customizable:** Theme base, active, selected, hover, border stroke, glow, and custom choropleth color functions.
 - 🏷️ **Labels & Tooltips:** Built-in floating tooltips and centroid district labels.
+- 🚚 **Delivery Routes:** Plot curved delivery or travel paths between district centers or custom SVG coordinates.
 - ⚡ **Zero External Runtime Dependencies:** Only peer dependencies are `react` and `react-dom`.
 - 🚀 **Next.js & SSR Ready:** Pre-bundled with `"use client"`. Works out of the box in Next.js App Router, Vite, Remix, Gatsby, and Astro.
 
@@ -136,6 +137,27 @@ const populationDensity: Record<string, string> = {
 />
 ```
 
+### 6. Delivery Routes
+
+Pass `routes` to draw delivery paths between district centers. Routes can also use raw `[x, y]` coordinates from the component's SVG viewBox:
+
+```tsx
+<NepalNaksha
+  routes={[
+    {
+      name: "Eastern delivery",
+      source: "Kathmandu",
+      destination: "Jhapa",
+      color: "#f97316",
+      width: 3,
+      dasharray: "8 6",
+    },
+  ]}
+/>
+```
+
+Set `name` to show a route label while that route is hovered. Route colors and styles are independently customizable, so applications can build route editors by collecting two district names and creating `NepalNakshaRoute` objects.
+
 ---
 
 ## Props
@@ -156,6 +178,7 @@ const populationDensity: Record<string, string> = {
 | `renderTooltip` | `(district, meta, item) => ReactNode` | `undefined` | Custom tooltip renderer. |
 | `renderSelected` | `(district, meta, item) => ReactNode` | `undefined` | Custom banner/card rendered beneath the map. |
 | `choropleth` | `(district, meta, item) => string` | `undefined` | Return custom fill color for each district. |
+| `routes` | `NepalNakshaRoute[]` | `[]` | Draw curved paths between district names or SVG `[x, y]` coordinates. |
 | `className` | `string` | `""` | Container CSS class. |
 | `svgClassName` | `string` | `""` | SVG element CSS class. |
 | `svgStyle` | `CSSProperties` | `{}` | SVG element inline styles. |
