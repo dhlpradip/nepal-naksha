@@ -2,6 +2,12 @@
 
 > Fast, lightweight, zero-dependency React component that renders an interactive SVG map of all 77 districts and 7 provinces of Nepal.
 
+[![npm version](https://img.shields.io/npm/v/nepal-naksha-react.svg)](https://www.npmjs.com/package/nepal-naksha-react)
+[![npm downloads](https://img.shields.io/npm/dm/nepal-naksha-react.svg)](https://www.npmjs.com/package/nepal-naksha-react)
+[![Live demo](https://img.shields.io/badge/demo-live-ef4444)](https://dhlpradip.github.io/nepal-naksha-demo/)
+
+**Current release: `1.2.0`** — includes configurable delivery routes with named, hover-only labels.
+
 **nepal-naksha** is built with accurate post-2015 federal boundaries, complete bilingual English & Nepali (Devanagari) metadata from [sandipbgt/nepal-data](https://github.com/sandipbgt/nepal-data), headquarters, smart alias resolution, and customizable theming.
 
 [**View the interactive demo →**](https://dhlpradip.github.io/nepal-naksha-demo/)
